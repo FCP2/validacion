@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="es" data-bs-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Portal oficial de verificación de credenciales de RecyInd.">
+  <meta name="theme-color" content="#075985">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Verificación de credencial | RecyInd</title>
+
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="assets/css/styles.css" rel="stylesheet">
+</head>
+
+<body>
+  <header class="topbar">
+    <nav class="container py-3 d-flex align-items-center justify-content-between" aria-label="Navegación principal">
+      <a class="brand text-decoration-none" href="/" aria-label="RecyInd, inicio">
+        <span class="brand-mark">
+          <img src="assets/img/logo-recyind.png" alt="RecyInd – Reciclaje Industrial" width="640" height="246">
+        </span>
+      </a>
+
+      <span class="secure-label">
+        <i class="bi bi-shield-check me-1" aria-hidden="true"></i>
+        Sitio de verificación
+      </span>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container position-relative">
+        <div class="row justify-content-center text-center">
+          <div class="col-lg-8">
+            <span class="eyebrow">
+              <span class="eyebrow-check" aria-hidden="true"><i class="bi bi-check-lg"></i></span>
+              Verificación oficial
+            </span>
+            <h1 class="display-5 fw-bold mt-3">Consulta la validez de una credencial</h1>
+            <p class="lead mb-0">Escanea el código QR de la identificación o captura el código de verificación.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="container content-wrap">
+      <div id="liveRegion" class="visually-hidden" aria-live="polite"></div>
+
+      <div id="searchPanel" class="verify-card mx-auto">
+        <div class="card-body-custom">
+          <div class="icon-circle mb-3"><i class="bi bi-qr-code-scan"></i></div>
+          <h2 class="h4 fw-bold text-center">Verificar credencial</h2>
+          <p class="text-secondary text-center mb-4">Ingresa el código completo impreso junto al QR.</p>
+
+          <form id="verifyForm" novalidate>
+            <label for="tokenInput" class="form-label fw-semibold">Código de verificación</label>
+            <div class="input-group input-group-lg has-validation">
+              <span class="input-group-text"><i class="bi bi-key"></i></span>
+              <input
+                type="text"
+                class="form-control text-uppercase"
+                id="tokenInput"
+                name="token"
+                autocomplete="off"
+                autocapitalize="characters"
+                spellcheck="false"
+                minlength="8"
+                maxlength="80"
+                required>
+              <button class="btn btn-primary px-4" type="submit" id="verifyButton">
+                <span class="button-label"><i class="bi bi-search me-1"></i> Verificar</span>
+                <span class="button-loading d-none">
+                  <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>Consultando
+                </span>
+              </button>
+              <div class="invalid-feedback">Captura un código de verificación válido.</div>
+            </div>
+          </form>
+
+          <div class="security-note mt-4">
+            <i class="bi bi-info-circle-fill" aria-hidden="true"></i>
+            <span>La información mostrada sirve únicamente para confirmar la identidad laboral.</span>
+          </div>
+        </div>
+      </div>
+
+      <section id="resultPanel" class="verify-card result-card mx-auto d-none" aria-labelledby="resultTitle">
+        <div id="statusBanner" class="status-banner">
+          <div class="status-heading">
+            <span class="status-symbol" aria-hidden="true">
+              <i id="statusIcon" class="bi bi-shield-check"></i>
+              <span class="status-indicator"></span>
+            </span>
+            <div>
+            <small>Resultado de la consulta</small>
+            <h2 id="resultTitle" class="h4 mb-0">Credencial vigente</h2>
+            </div>
+          </div>
+          <div class="verification-seal">
+            <i class="bi bi-lock-fill" aria-hidden="true"></i>
+            <span><small>Fuente</small>Registro oficial</span>
+          </div>
+        </div>
+
+        <div class="card-body-custom">
+          <div class="identity-card">
+            <div class="profile-block">
+              <div class="photo-frame">
+                <img id="employeePhoto" class="employee-photo" src="assets/img/avatar-placeholder.svg"
+                 alt="Fotografía de la persona titular">
+                <span class="photo-verified" title="Identidad registrada" aria-label="Identidad registrada">
+                  <i class="bi bi-check-lg" aria-hidden="true"></i>
+                </span>
+              </div>
+              <div class="flex-grow-1 identity-content">
+                <span class="record-label">Titular de la credencial</span>
+                <h3 id="employeeName" class="employee-name">Nombre del colaborador</h3>
+                <p id="employeePosition" class="position-text">Puesto</p>
+                <span id="statusBadge" class="status-chip vigente">
+                  <span class="status-dot" aria-hidden="true"></span>Vigente
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <dl class="credential-grid">
+            <div>
+              <dt><span class="detail-icon"><i class="bi bi-person-vcard" aria-hidden="true"></i></span>Folio</dt>
+              <dd id="employeeId">—</dd>
+            </div>
+            <div>
+              <dt><span class="detail-icon"><i class="bi bi-building" aria-hidden="true"></i></span>Empresa</dt>
+              <dd id="companyName">RecyInd</dd>
+            </div>
+            <div>
+              <dt><span class="detail-icon"><i class="bi bi-calendar-check" aria-hidden="true"></i></span>Periodo de vigencia</dt>
+              <dd id="validity">—</dd>
+            </div>
+            <div>
+              <dt><span class="detail-icon"><i class="bi bi-clock-history" aria-hidden="true"></i></span>Última consulta</dt>
+              <dd id="checkedAt">—</dd>
+            </div>
+          </dl>
+
+          <div id="warningBox" class="alert alert-warning mt-4 mb-0 d-none" role="alert"></div>
+
+          <div class="result-actions">
+            <button type="button" class="btn btn-primary" id="newSearchButton">
+              <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>Nueva consulta
+            </button>
+            <button type="button" class="btn btn-soft" id="copyButton">
+              <i class="bi bi-copy" aria-hidden="true"></i>Copiar folio
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section id="errorPanel" class="verify-card mx-auto d-none" aria-labelledby="errorTitle">
+        <div class="card-body-custom text-center">
+          <div class="icon-circle icon-danger mb-3"><i class="bi bi-x-octagon"></i></div>
+          <h2 id="errorTitle" class="h4 fw-bold">Credencial no localizada</h2>
+          <p id="errorMessage" class="text-secondary">El código no corresponde a una credencial registrada.</p>
+          <button type="button" class="btn btn-outline-primary" id="errorBackButton">
+            <i class="bi bi-arrow-left me-1"></i>Intentar nuevamente
+          </button>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <div class="footer-contact">
+        <strong class="footer-brand">RecyInd – Reciclaje Industrial</strong>
+        <address class="contact-list">
+          <div class="contact-item">
+            <span class="contact-icon" aria-hidden="true"><i class="bi bi-geo-alt-fill"></i></span>
+            <span>Av. Toluca No. 141, Col. Guadalupe Victoria, Otzolotepec, Estado de México, C.P. 52080</span>
+          </div>
+          <div class="contact-item">
+            <span class="contact-icon" aria-hidden="true"><i class="bi bi-telephone-fill"></i></span>
+            <span class="contact-links">
+              <a href="tel:+527292251844">729 225 1844</a>
+              <span aria-hidden="true">·</span>
+              <a href="tel:+527291005774">729 100 5774</a>
+            </span>
+          </div>
+          <div class="contact-item">
+            <span class="contact-icon" aria-hidden="true"><i class="bi bi-envelope-fill"></i></span>
+            <a href="mailto:Recyind.mx@gmail.com">Recyind.mx@gmail.com</a>
+          </div>
+        </address>
+      </div>
+      <div class="footer-meta">
+        <p>© <span id="year"></span> RecyInd. Todos los derechos reservados.</p>
+        <p class="developer-credit"><i class="bi bi-code-slash" aria-hidden="true"></i>Desarrollado por <strong>ATI</strong></p>
+        <p><i class="bi bi-lock-fill me-1" aria-hidden="true"></i>Consulta pública de validez</p>
+      </div>
+    </div>
+  </footer>
+
+  <div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="appToast" class="toast border-0 shadow" role="status" aria-live="polite" aria-atomic="true">
+      <div class="toast-body d-flex align-items-center gap-2">
+        <i class="bi bi-check-circle-fill text-success"></i>
+        <span id="toastText">Folio copiado.</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+          crossorigin="anonymous"></script>
+  <script src="assets/js/app.js" defer></script>
+</body>
+</html>
